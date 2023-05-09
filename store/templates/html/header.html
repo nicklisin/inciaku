@@ -1,0 +1,36 @@
+{% load static %}
+{% include 'html/mobilemenu.html' %}
+
+<div class="top-submenu">
+<ul>
+  <li><a class="city" href="">Москва</a></li>
+  <li><a href="/about/">О компании</a></li>
+  <li><a href="">Утилизация</a></li>
+  <li><a href="">Гарантия</a></li>
+</ul>
+</div>
+<div class="top">
+<div class="menu-icon">
+</div>
+            
+<div class="logo">
+  <a href="/">
+      <img src="{% static 'images/logo-text-en.svg' %}" alt="InciAku">
+  </a>
+</div>
+
+{% include 'html/mainmenu.html' %}
+
+<div class="r-icons">
+  <div class="search-icon">
+    <a href=""><img src="{% static 'images/search-i.svg' %}"></a>
+  </div>
+  <div class="top-phone">
+    <a href="">+7(495) 109-20-40</a>
+  </div>
+  <div class="basket-icon">
+    <a href="{% url 'cart' %}"><img src="{% static 'images/basket-i.svg' %}"></a>
+  </div>
+  <div class="basket-q"><a href={% url 'cart' %}>{{ cart_count_global }}</a></div>
+</div>
+</div>

@@ -1,0 +1,93 @@
+{% load static %}
+<script src="{% static 'js/cart.js' %}"></script>
+<script>
+    let cart = JSON.parse(getCookie('cart'))
+    if(cart === null){
+        cart = {}
+        document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+    }
+</script>
+
+<script src="{% static 'js/jquery.dlmenu.js' %}"></script>
+
+<script>
+    const search =  document.querySelector('.search-wrap')
+    const filterBtn = document.querySelector('.filter-btn')
+    const searchBtn = document.querySelector('.search-icon')
+    const closeSearch =  document.querySelector('.close-search-link')
+
+    if(filterBtn){
+        const filters =  document.querySelector('.left-nav-box')
+        const filtersIn =  document.querySelector('.left-nav')
+        filterBtn.addEventListener('click', (e)=>{
+            filters.classList.toggle('left-nav-box-show')
+        })
+
+        filters.addEventListener('click', (e)=>{
+            isClickInside = filtersIn.contains(e.target);
+            if(!isClickInside){
+                filters.classList.toggle('left-nav-box-show')
+            }
+        })
+    }
+
+    searchBtn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        search.classList.add('show-search');
+    })
+    closeSearch.addEventListener('click',(e)=>{
+        e.preventDefault();
+        search.classList.remove('show-search');
+    })
+</script>
+<script>
+    $(function() {
+        $( '#dl-menu' ).dlmenu({
+            animationClasses : { classin : 'dl-animate-in-2', classout : 'dl-animate-out-2' }
+        });
+    });
+</script>
+
+<script>
+
+var $menu = $(".dropdown-menu");
+$menu.menuAim({
+    activate: activateSubmenu,
+    deactivate: deactivateSubmenu
+});
+function activateSubmenu(row) {
+    var $row = $(row),
+        submenuId = $row.data("submenuId"),
+        $submenu = $("#" + submenuId),
+        height = $menu.outerHeight(),
+        width = $menu.outerWidth();
+
+    $submenu.css({
+        display: "block",
+        top: -1,
+        left: width - 3,  // main should overlay submenu
+        height: height - 4  // padding for main dropdown's arrow
+    });
+
+    $row.find("a").addClass("maintainHover");
+}
+
+function deactivateSubmenu(row) {
+    var $row = $(row),
+        submenuId = $row.data("submenuId"),
+        $submenu = $("#" + submenuId);
+
+    $submenu.css("display", "none");
+    $row.find("a").removeClass("maintainHover");
+}
+
+$(".dropdown-menu li").click(function(e) {
+    e.stopPropagation();
+});
+
+$(document).click(function() {
+    $(".popover").css("display", "none");
+    $("a.maintainHover").removeClass("maintainHover");
+});
+
+</script>

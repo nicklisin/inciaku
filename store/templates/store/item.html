@@ -1,0 +1,156 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+
+        <div class="cat-top">
+            <div class="bread">
+              <ul class="breadul">
+                <li><a href="">Главная</a></li>
+                <li><a href="">Каталог</a></li>
+                <li><a href="">Стационарные аккумуляторы</a></li>
+                <li>Герметезированные стационарные</li>
+              </ul>
+            </div>
+        </div>
+
+        <div class="card-box">
+          <div class="card-content">
+            <div class="top-card">
+              <div class="container">
+                <div class="t-card-head">
+                  <h1>Автомобильный аккумулятор {{ product.brand }} {{ product.name }} {{ product.technology|default:"" }}</h1>
+                  <div class="card-brand">
+                    <img src={% static 'images/logo-text-en.svg' %}>
+                  </div>
+                  <div class="art"><span>000530055533</span></div>
+                </div>
+                <div class="card-tags-box">
+                  <ul class="card-tags">
+                    <li class="card-tag green-tag"><span>Скидка по утилизации</span></li>
+                    <li class="card-tag"><span>Доставка по Мск 0р.</span></li>
+                  </ul>
+                </div>
+                <div class="t-c-good">
+                  <div class="t-c-cont-l">
+                    <div class="card-big-img">
+                      <img src="{% static product.photoURL %}">
+                    </div>
+                  </div>
+                  <div class="t-c-cont-r">
+                    <div class="card-price-box">
+                      <div class="card-price">
+                        <div class="c-price"><span>{{ product.price }}</span> р.</div>
+                        <div class="c-sale">−5%</div>
+                          {% if product.old_price %}
+                        <div class="c-old-price"><span>{{ product.old_price }}</span> р.</div>
+                          {% endif %}
+                        <div class="deshevle"><a data-toggle="modal" data-target="#myPetition" href="">Нашли дешевле?</a></div>
+                      </div>
+                      <div class="c-btns">
+                        <div class="good-btn-a-box">
+                        <button data-product="{{ product.id }}" data-action="add" class="add-btn update-cart good-btn">В корзину</button>
+                        </div>
+                        <div class="oneclick-box">
+                          <div class="oneclick-btn"><a data-toggle="modal" data-target="#myCallback" href="">Заказать по телефону</a></div>
+                        </div>
+                      </div>
+                      <div class="c-util-box">
+                        <div class="c-util">
+                          <div class="c-util-h">♻ Утилизация</div>
+                          <div class="utilsum">Скидка до <span>1800р./шт</span> при сдаче старых на&nbsp;переработку</div>
+                        </div>
+                      </div>
+                    </div>
+                      <div class="c-deliv-box">
+                        <div class="c-deliv">
+                          <div class="c-deliv-h">🚚 Доставка</div>
+                          <div class="outofstock">Под заказ</div>
+                          <div class="deliv-time">Срок поставки <span>10–30</span> дней</div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tech-spec-box">
+              <div class="tech-spec">
+                <div class="container">
+                  <div class="tech-spec-table">
+                    <p class="tech-spec-h">Характеристики</p>
+                    <table>
+                      <tr>
+                        <td class="spec-title">Технология</td>
+                        <td>AGM</td>
+                      </tr>
+                      <tr>
+                        <td class="spec-title">Емкость, Ач</td>
+                        <td>100</td>
+                      </tr>
+                      <tr>
+                        <td class="spec-title">Напряжение, В</td>
+                        <td>12</td>
+                      </tr>
+                      <tr>
+                        <td class="spec-title">Вес, кг</td>
+                        <td>35,3</td>
+                      </tr>
+                      <tr>
+                        <td class="spec-title">Страна производитель</td>
+                        <td>США</td>
+                      </tr>
+                        <td class="spec-title">Габариты, мм</td>
+                        <td>331,7x175,0x243,6</td>
+                      </tr>
+                      <tr>
+                        <td class="spec-title">Полюсной вывод</td>
+                        <td>SAE и под гайку 3/8"</td>
+                      </tr>
+                      <tr>
+                        <td class="spec-title">Ток короткого замыкания, А</td>
+                        <td>5000</td>
+                      </tr>
+                      <tr>
+                        <td class="spec-title">Ток холодной прокрутки, А</td>
+                        <td>1150</td>
+                      </tr>
+                      <tr>
+                        <td class="spec-title">Внутреннее сопротивление, мОм</td>
+                        <td>2,2</td>
+                      </tr>
+                      <tr>
+                        <td class="spec-title">Гарантия производителя</td>
+                        <td>24 месяца</td>
+                      </tr>
+                      <tr>
+                        <td class="spec-title">Тип АКБ</td>
+                        <td>Необслуживаемый</td>
+                      </tr>
+                      <tr>
+                        <td class="spec-title">Срок эксплуатации</td>
+                        <td>8-12 лет / 3-10 лет</td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="card-comment">
+                    <p class="tech-spec-h">Комментарий</p>
+                    <p>Цена не учитывает скидку при обмене старых на новые АКБ. В зависимости от количества приобретаемых и сдаваемых на утилизацию аккумуляторов, менеджер согласует индивидуальную итоговую стоимость для вас.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="tech-description">
+                <div class="container">
+                  <p class="tech-spec-h">Описание</p>
+
+                  <div class="tech-description-text">
+                    <p>Конструкция VRLA с сепаратором AGM надежно удерживает электролит и не допускает проливов даже при установке аккумулятора на боку.</p>
+                    <p>Долговечность аккумулятора Odyssey 31-PC2150 Extreme Series в 3 раза выше, чем у обычного аккумулятора!</p>
+                    <p>Благодаря используемой технологии TPPL (тонких пластин из чистого свинца), аккумулятор Odyssey 31-PC2150 Extreme Series имеет срок службы 3-10 лет (в зависимости от интенсивности использования и условий эксплуатации), выдерживает 400 циклов заряда-разряда до глубины разряда 80%.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+{#            @@include('./html/questions.html', {'text': 'Odyssey 31-PC2150 12V 100Ah'})#}
+          </div>
+        </div>
+
+{% endblock content %}

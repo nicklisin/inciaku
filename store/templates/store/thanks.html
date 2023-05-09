@@ -1,0 +1,35 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+
+      <div class="basket-box">
+          <h1>Спасибо за заказ!</h1>
+          <p>В ближайшее время с вами свяжется менеджер для подтверждения заказа и согласования деталей.</p>
+{#        <div class="basket-content">#}
+{#          <div class="basket-top">#}
+{#              <div class="basket-l">#}
+{#                <div class="basket-goods">#}
+{#                    {% for item in items %}#}
+{#                        <div class="basket-good">#}
+{#                    <div class="b-g-img">#}
+{#                      <a href="#"><img src={% static item.product.photoURL %}></a>#}
+{#                    </div>#}
+{#                    <div class="b-g-text">#}
+{#                      <div class="b-g-text-top">#}
+{#                        <div class="b-g-name">#}
+{#                        <a href="card.html">{{ item.product.brand }} {{item.product.name }}</a>#}
+{#                        </div>#}
+{#                        <div class="b-g-price"><span>{{ item.product.price | floatformat:2 }}</span> ₽</div>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                  </div>#}
+{#                    {% endfor %}#}
+{##}
+{#                </div>#}
+{#              </div>#}
+{##}
+{#          </div>#}
+{#        </div>#}
+      </div>
+
+{% endblock content %}

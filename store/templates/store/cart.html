@@ -1,0 +1,223 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+      <div class="basket-box">
+      {% if items %}
+         <div style="display: none" id="empty-basket">
+            <h1>Корзина</h1>
+            <p>В корзине пока нет товаров.</p>
+            <p>Попробуйте начать с <a class="underline" href={% url 'store' %}>каталога</a>.</p>
+         </div>
+
+        <div id="full-basket">
+        <h1>Корзина</h1>
+        <div class="basket-content">
+          <div class="basket-top">
+
+              <div class="basket-l">
+                <div class="basket-goods">
+                    {% for item in items %}
+                        <div id="basket-good-{{item.product.id}}" class="basket-good">
+                    <div class="b-g-img">
+                      <a href="/store/{{item.product.id}}/"><img src="{% static item.product.photoURL %}"></a>
+                    </div>
+                    <div class="b-g-text">
+                      <div class="b-g-text-top">
+                        <div class="b-g-name">
+                        <a href="/store/{{item.product.id}}/">{{ item.product.brand }} {{item.product.name }}</a>
+                        </div>
+                        <div class="b-g-price"><span>{{ item.product.price | floatformat:2 }}</span> ₽</div>
+                        <div class="b-g-stock">
+                          <span class="b-instock">В наличии</span>
+                        </div>
+
+
+                        <div class="b-g-quant-box">
+                          <span class="b-g-q">
+                            <div class="basket-good-q">
+                              <div class="q-box">
+                        <div class="input-group counter">
+
+                          <span class="input-group-btn">
+                            <button id="reduce-q-{{ item.product.id }}" {% if item.quantity == 1 %}disabled{% endif %} data-product="{{ item.product.id }}" data-action="reduce-q" class="basket_button minus btn btn-default btn-number update-cart">
+                              <span aria-hidden="true" class="glyphicon glyphicon-minus"></span>
+                            </button>
+                          </span>
+                          <input min="1" id="input-{{ item.product.id }}" value={{ item.quantity }} type="number" class="basket_input form-control input-number">
+                          <span class="input-group-btn">
+                            <button data-product="{{ item.product.id }}" data-action="add" class="basket_button plus btn btn-default btn-number update-cart">
+                              <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+                            </button>
+                          </span>
+                        </div>
+                      </div>
+                            </div>
+                          </span>
+                          <span class="b-g-del">
+                            <a data-product="{{ item.product.id }}" data-action="remove" class="update-cart" href="">Удалить</a></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    {% endfor %}
+
+
+                </div>
+                  <form id="checkout-form">
+                  <div class="basket-del-box">
+                    <h3><span>1</span>Где и как вы хотите получить заказ?</h3>
+                    <ul class="b-g-delivery">
+                    {% for item in delivery_types %}
+                        <li class="b-g-del-item">
+                          <input class="b-g-radio-input" name="delivery-input" type="radio" value={{ item.id }} id={{ item.code }} hidden data-action="click">
+                          <label class="b-g-radio-input-label b-g-radio-button" for={{ item.code }} >
+                            <i class="b-g-radio-icon"></i>
+                            <div class="b-g-radio-title">{{ item.name }}</div>
+                            <div class="b-g-radio-desc">{{ item.description }}</div>
+                          </label>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                        <div class="b-contact-item address-box" style="display: none;">
+                          <div class="b-text-field">
+                            <label for="name">Адрес</label>
+                            <input type="text" name="address" placeholder="Адрес доставки">
+                          </div>
+                         </div>
+                  </div>
+                  <div class="basket-pay-box">
+                    <h3><span>2</span>Выберите способ оплаты</h3>
+                      <ul class="b-g-delivery">
+                          {% for payment_type in payment_types %}
+
+                        <li class="b-g-del-item">
+                          <input class="b-g-radio-input" name="payment-input" type="radio" id={{ payment_type.code }} value={{ payment_type.id }} hidden data-action="click">
+                          <label class="b-g-radio-input-label b-g-radio-button" for={{ payment_type.code }} >
+                            <i class="b-g-radio-icon"></i>
+                            <div class="b-g-radio-title">{{ payment_type.name }}</div>
+                            <div class="b-g-radio-desc">{{ payment_type.description }}</div>
+                          </label>
+                        </li>
+
+                          {% endfor %}
+                      </ul>
+                  </div>
+                  <div class="basket-contact-box">
+                    <h3><span>3</span>Укажите ваши данные</h3>
+                    <div class="b-contact">
+                      <ul>
+                        <li class="b-contact-item">
+                          <div class="b-text-field">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" placeholder="Email">
+                          </div>
+                        </li>
+                        <li class="b-contact-item">
+                          <div class="b-text-field">
+                            <label for="phone">Телефон</label>
+                            <input id="phone" class="form-control" type="tel" name="phone" value="+7 (___) ___ - __ - __" mask="+7 (___) ___ - __ - __" placeholder="+7 (___) ___ - __ - __">
+                          </div>
+                        </li>
+                        <li class="b-contact-item">
+                          <div class="b-text-field">
+                            <label for="name">Имя</label>
+                            <input type="text" name="name" placeholder="Имя">
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  </form>
+
+              </div>
+              <div class="basket-r">
+                <div class="back-to-shop">
+                  <a href={% url 'store' %}>Вернуться к покупкам</a>
+                </div>
+                <div class="basket-price-box">
+                  <div class="basket-price-item">
+                    <div class="b-p-i-t">Товары</div>
+                    <div class="b-p-i-s"><span id="basket-goods-total">{{ cart_total | floatformat:0 }}</span> ₽</div>
+                  </div>
+                  <div class="basket-price-item">
+                    <div class="b-p-i-t">Доставка</div>
+                    <div class="b-p-i-s"><span id="basket-delivery-total">0</span> ₽</div>
+                  </div>
+                  <div class="card-price">
+                    <div class="c-price"><span id="basket-total">{{ cart_total | floatformat:0 }}</span> ₽</div>
+                    </div>
+                    <div class="c-btns">
+                    <div class="good-btn-a-box">
+                        {% if items %}
+                            <span class="good-btn-a good-btn-order"><button type="submit" id="checkout-submit-btn" class="good-btn">Продолжить</button></span>
+                        {% endif %}
+                    </div>
+                    </div>
+                  </div>
+                  <div class="basket-personal">
+                    <span>Отправляя заказ, вы даёте согласие на обработку <a href="">персональных данных</a></span>
+                  </div>
+              </div>
+
+          </div>
+        </div>
+        </div>
+      {% else %}
+          <div id="empty-basket">
+          <h1>Корзина</h1>
+          <p>В корзине пока нет товаров.</p>
+          <p>Попробуйте начать с <a class="underline" href={% url 'store' %}>каталога</a>.</p>
+          </div>
+      {% endif %}
+      </div>
+
+    <script src="/store/static/js/phonemask.min.js"></script>
+    <script type="text/javascript">
+        const cssPhone = 'input[name="phone"]';
+        (new phoneMask()).init(cssPhone);
+    </script>
+    <script>
+    const form = document.querySelector('#checkout-form')
+    const submitBtn = document.querySelector('#checkout-submit-btn')
+    submitBtn.addEventListener('click', (e)=>{
+        e.preventDefault()
+        SubmitFormData()
+    })
+
+    if (user !== 'AnonymousUser') {
+        if(!form.name.value){
+            form.name.value = '{{customer.name}}'
+        }
+        if(!form.email.value){
+            form.email.value = '{{customer.email}}'
+        }
+    }
+
+    function SubmitFormData(){
+        let phone = form.phone.value.replace(/ /g,'')
+        let userFormData = {
+            'name': form.name.value,
+            'email': form.email.value,
+            'phone': phone,
+            'delivery_type': document.querySelector('input[name="delivery-input"]:checked').value,
+            'payment_type': document.querySelector('input[name="payment-input"]:checked').value,
+            'address': form.address.value
+        }
+        const url = '/process_order/'
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({'form': userFormData})
+        }).then((response) => response.json())
+            .then((data) => {
+                cart = {}
+                document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+                window.location.href = "{% url 'thanks' %}"
+            })
+    }
+    </script>
+
+{% endblock content %}

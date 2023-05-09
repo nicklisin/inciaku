@@ -1,0 +1,119 @@
+import json
+
+from django.db.models import F
+from django.shortcuts import render
+from django.db import connection
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.contrib.auth.models import User
+
+from .models import Product, Order, OrderItem, ShippingAddress, Customer, Page, DeliveryType, PaymentType
+from .utils import cookie_cart, cart_data, guest_order
+
+
+def index(request):
+    data = {}
+    context = {'data': data}
+    return render(request, 'store/index.html', context=context)
+
+def text_page(request, url):
+    page = Page.objects.get(url=url)
+    context = {'page': page}
+    return render(request, 'store/text_page.html', context=context)
+
+def store(request):
+    data = cart_data(request)
+    items = data['items']
+    items_ids = []
+    #TODO вернуть список айдишников (не работает при авторизации)
+    # for i in items:
+    #     items_ids.append(i['product']['id'])
+    products = Product.objects.all()
+    context = {'products': products, 'items': items, 'items_ids': items_ids}
+    return render(request, 'store/store.html', context)
+
+def item(request, pk):
+    product_item = Product.objects.get(id=pk)
+    context = {'product': product_item}
+    return render(request, 'store/item.html', context)
+
+def cart(request):
+    data = cart_data(request)
+    delivery_types = DeliveryType.objects.all()
+    payment_types = PaymentType.objects.all()
+    items = data['items']
+    get_cart_total = data['cart_total']
+    get_cart_count = data['cart_count']
+    customer = data['customer']
+    context = {'customer': customer, 'items': items, 'cart_total': get_cart_total, 'cart_count': get_cart_count, 'delivery_types': delivery_types, 'payment_types': payment_types}
+    return render(request, 'store/cart.html', context)
+
+
+def checkout(request):
+    data = cart_data(request)
+    items = data['items']
+    get_cart_total = data['cart_total']
+    get_cart_count = data['cart_count']
+    customer = data['customer']
+
+    context = {'customer': customer, 'items': items, 'cart_total': get_cart_total, 'cart_count': get_cart_count}
+    return render(request, 'store/checkout.html', context)
+
+
+def update_item(request):
+    data = json.loads(request.body)
+    action = data['action']
+    product_id = data['productId']
+
+    customer = request.user.customer
+    product = Product.objects.get(id=product_id)
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    order_item, created = OrderItem.objects.get_or_create(order=order, product=product)
+    if action == 'add':
+        order_item.quantity += 1
+        order_item.save()
+    if action == 'reduce-q':
+        if order_item.quantity > 1:
+            order_item.quantity -= 1
+            order_item.save()
+        else:
+            order_item.delete()
+    if action == 'remove':
+        order_item.delete()
+    cart_quantity = order.get_cart_count
+
+    return JsonResponse({
+        'action': action,
+        'product_id': product_id,
+        'cart_quantity': cart_quantity
+    }, safe=False)
+
+
+def process_order(request):
+    data = json.loads(request.body)
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        order.complete = True
+    else:
+        customer, order = guest_order(request, data)
+
+    if data['form']['address']:
+        shipping = ShippingAddress.objects.create(customer=customer, order=order)
+        shipping.address = data['form']['address']
+        shipping.save()
+    delivery = DeliveryType.objects.get(id=data['form']['delivery_type'])
+    order.delivery_type = delivery
+    payment = PaymentType.objects.get(id=data['form']['payment_type'])
+    order.payment_type = payment
+    order.save()
+
+    return JsonResponse('order submitted', safe=False)
+
+def get_guest_cart_total(request):
+    cookie_data = cookie_cart(request)
+    cookie_cart_total = cookie_data['cart_total']
+    return JsonResponse(cookie_cart_total, safe=False)
+
+def thanks(request):
+    return render(request, 'store/thanks.html')

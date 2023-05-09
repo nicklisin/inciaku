@@ -1,0 +1,398 @@
+{% extends 'store/index.html' %}
+{% load static %}
+{% block content %}
+
+        <div class="cat-top">
+            <div class="bread">
+              <ul class="breadul">
+                <li><a href="">Главная</a></li>
+                <li><a href="">Каталог</a></li>
+                <li><a href="">Стационарные аккумуляторы</a></li>
+                <li>Герметизированные стационарные</li>
+              </ul>
+            </div>
+        </div>
+
+        <div class="cat-box">
+            <div class="cat-content">
+              <div class="r-container">
+                  <h1>Герметизированные стационарные аккумуляторы</h1>
+
+                    <div class="goods-box">
+                      <div class="filter-btn-box">
+                        <button class="filter-btn"><span>⚭</span> Фильтры</button>
+                      </div>
+                      <div class="sort-big">
+                        <div class="sort-b-box">
+                          <div class="sort-line">
+                            <span>Сортировка</span>
+                            <a class="s-sel" href="">Цена по убыванию</a>
+                            <a href="">Цена по возрастанию</a>
+                            <a href="">По популярности</a>
+                            <a href="">Новинки</a>
+                          </div>
+                        </div>
+                      </div>
+
+                {% for product in products %}
+                    <div class="good-box">
+                        <div class="good">
+                          <div class="good-img">
+                            <a href="/store/{{product.id}}/"><img src="{% static product.photoURL %}"></a>
+                          </div>
+                          <div class="good-title"><a href="/store/{{product.id}}/">{{ product.name }} {{ product.technology|default:"" }}</a></div>
+                          <div class="good-params">
+                            <div class="good-param">
+                              <p>Напряжение, В: <span>12</span></p>
+                            </div>
+                            <div class="good-param">
+                              <p>Емкость, Ач: <span>100</span></p>
+                            </div>
+                            <div class="good-param">
+                              <p>Габариты, мм: <span>331,7x175,0x243,6</span></p>
+                            </div>
+                          </div>
+                          <div class="good-price-box">
+                            <div class="good-price">{{ product.price|floatformat:"0" }} р.</div>
+                            {% if product.old_price %}
+                              <div class="good-old-price">{{ product.old_price|floatformat:"0" }} р.</div>
+                            {% endif %}
+                            {% if product.id in items %}
+                                <p>{{ items }}</p>
+                            {% endif %}
+                          </div>
+                        {% if product.id in items_ids %}
+                          <a class="good-btn-a good-btn-order" href="/cart/">
+                            <div class="good-btn">В корзине</div>
+                          </a>
+                          <a href="/cart/"></a>
+                        {% else %}
+                          <button data-product="{{ product.id }}" data-action="add" class="good-btn update-cart">В корзину</button>
+                          <a href=""></a>
+                        {% endif %}
+
+                        </div>
+                      </div>
+                {% endfor %}
+                      <div class="pages-box">
+                            <div class="pages">
+                              <ul>
+                                <li class="pages-f-b"><a href="">Назад</a></li>
+                                <li class="p-num"><a href="">1</a></li>
+                                <li class="act-page"><a href="">2</a></li>
+                                <li class="page-points">...</li>
+                                <li class="p-num"><a href="">10</a></li>
+                                <li class="pages-f-b"><a href="">Вперед</a></li>
+                              </ul>
+                            </div>
+                        </div>
+                      </div>
+              </div>
+              <div class="left-nav-box">
+                <div class="left-nav">
+                  <div class="filt-top"><span>Фильтры</span></div>
+                  <div class="filt-sec">
+                    <div class="filt-semi">Категории</div>
+                    <div class="filt-back"><span><</span><a href="">Типы аккумуляторов</a></div>
+                    <div class="filt-back"><span><</span><a href="">Стационарные</a></div>
+                    <div class="filt-l">
+                      <a class="filt-l-cur" href="">Герметизированные</a>
+                    </div>
+                  </div>
+                  <div class="filt-sec">
+                    <div class="filt-semi">Цена</div>
+                    <div class="pol-sec">
+                      <div class="p-s p-s-l">
+                        <div class="psp"></div>
+                      </div>
+                      <div class="p-s p-s-r">
+                        <div class="psp"></div>
+                      </div>
+                      <div class="p-line"></div>
+                      <div class="p-line p-line-c"></div>
+                    </div>
+                    <div class="pol-fills">
+                      <div class="p-f-box">
+                        <select class="p-f-fill">
+                          <option>Минимум</option>
+                          <option>2000р</option>
+                          <option>5000р</option>
+                          <option>10000р</option>
+                        </select>
+                      </div>
+                      <div class="fill-to">до</div>
+                      <div class="p-f-box">
+                        <select class="p-f-fill">
+                          <option>10000р</option>
+                          <option>20000р</option>
+                          <option>50000р</option>
+                          <option>50000р+</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="filt-sec">
+                    <div class="filt-semi">Бренд</div>
+                    <div class="filt-checks">
+                      <div class="filt-del-check">
+                        <div class="filt-del-l">✕</div>
+                        <div class="filt-del-r"><span>Очистить все</span></div>
+                      </div>
+                      <div class="check-cont">
+                        <div class="check-box">
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="" checked>
+                              <div class="check-point"></div>
+                              <div class="check-text">PowerSafe</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="" value="off">
+                              <div class="check-point"></div>
+                              <div class="check-text">Odyssey</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="" value="off">
+                              <div class="check-point"></div>
+                              <div class="check-text">Delta</div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="filt-sec">
+                    <div class="filt-semi">Страна производства</div>
+                    <div class="filt-checks">
+                      <div class="check-cont">
+                        <div class="check-box">
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">Польша</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">Болгария</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">Великобритания</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">Германия</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">Италия</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">Китай</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">Мексика</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">Россия</div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="filt-sec">
+                    <div class="filt-semi">Напряжение, В</div>
+                    <div class="filt-checks">
+                      <div class="check-cont">
+                        <div class="check-box filt-two-cols">
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">1,2</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">2</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">4</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">6</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">8</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">12</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">16</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">24</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">36</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">40</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">48</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">72</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">80</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">96</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">2х40</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">3,2</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">3,3</div>
+                            </label>
+                          </div>
+                          <div class="check">
+                            <label>
+                              <input type="checkbox" name="">
+                              <div class="check-point"></div>
+                              <div class="check-text">3,6</div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="filt-sec">
+                    <div class="filt-semi">Емкость, А·ч</div>
+                    <div class="pol-sec">
+                      <div class="p-s p-s-l">
+                        <div class="psp"></div>
+                      </div>
+                      <div class="p-s p-s-r">
+                        <div class="psp"></div>
+                      </div>
+                      <div class="p-line"></div>
+                      <div class="p-line p-line-c"></div>
+                    </div>
+                    <div class="pol-fills">
+                      <div class="p-f-box">
+                        <input type="text" class="p-f-fill-text" value="1">
+                      </div>
+                      <div class="fill-to">до</div>
+                      <div class="p-f-box">
+                        <input type="text" class="p-f-fill-text" value="4000">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+{#            <div class="clearfix"></div>#}
+{#                @@include('./html/questions.html', {'text': ''})#}
+{#                @@include('./html/popular-box.html', {"title": "Вы смотрели"})#}
+            </div>
+{% endblock content %}
