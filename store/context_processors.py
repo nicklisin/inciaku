@@ -14,5 +14,5 @@ def cart_count(request):
 
 
 def get_main_menu(request):
-    main_menu = Page.objects.filter(in_main_menu=True)
+    main_menu = Page.objects.filter(in_main_menu=True).order_by('-order')
     return {'main_menu': main_menu}

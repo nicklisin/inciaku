@@ -65,3 +65,32 @@ def guest_order(request, data):
         order_item = OrderItem.objects.create(order=order, product=product, quantity=item['quantity'])
         order_item.save()
     return customer, order
+
+
+def get_meta(request, page_type:str, data):
+    title = ''
+    description = ''
+    if page_type == 'index':
+        title = 'Главная'
+        description = 'Главная страница'
+    if page_type == 'text_page':
+        title = data.title
+        description = data.description
+    if page_type == 'store':
+        title = 'Каталог'
+        description = 'Каталог товаров Inci Aku'
+    if page_type == 'item':
+        title = f'Автомобильный аккумулятор {str(data.brand)} {str(data.name)} {str(data.technology)}'
+        try:
+            description = str(data.description)
+        except:
+            description = description
+    if page_type == 'cart':
+        title = 'Корзина'
+        description = 'Корзина товаров'
+
+    meta = {
+        'title': title,
+        'description': description,
+    }
+    return meta

@@ -47,14 +47,33 @@ class Technology(models.Model):
 
 
 class Product(models.Model):
+    REVERSE = 'REV'
+    DIRECT = 'DIR'
+    UNIVERSAL = 'UNI'
+    POLARITY_CHOICES = [
+        (REVERSE,'Обратная'),
+        (DIRECT, 'Прямая'),
+        (UNIVERSAL, 'Универсальная'),
+    ]
     name = models.CharField(max_length=200, null=False, blank=False)
+    art_code = models.CharField(max_length=20, null=True, blank=True)
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, blank=False, default=None)
     type = models.ForeignKey(ProductType, on_delete=models.SET_NULL, null=True, blank=False, default=None)
-    price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
-    old_price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    polarity = models.CharField(max_length=20, choices=POLARITY_CHOICES, null=True, blank=True)
+    price = models.DecimalField(max_digits=9, decimal_places=2, null=True, blank=True)
+    old_price = models.DecimalField(max_digits=9, decimal_places=2, null=True, blank=True)
     series = models.ForeignKey(Series, on_delete=models.SET_NULL, null=True, blank=True)
     technology = models.ForeignKey(Technology, on_delete=models.SET_NULL, null=True, blank=True)
     photo = models.ImageField(upload_to='product/', default='', null=True, blank=True)
+    capacity = models.IntegerField(null=True, blank=True, default=0)
+    weight = models.IntegerField(null=True, blank=True, default=0)
+    length = models.IntegerField(null=True, blank=True, default=0)
+    width = models.IntegerField(null=True, blank=True, default=0)
+    height = models.IntegerField(null=True, blank=True, default=0)
+    voltage = models.IntegerField(null=True, blank=True, default=12)
+    cranking_amperage = models.IntegerField(null=True, blank=True, default=0)
+    warranty = models.IntegerField(null=True, blank=True, default=12)
+
 
     def __str__(self):
         return self.name

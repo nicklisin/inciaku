@@ -8,44 +8,49 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
 from .models import Product, Order, OrderItem, ShippingAddress, Customer, Page, DeliveryType, PaymentType
-from .utils import cookie_cart, cart_data, guest_order
+from .utils import cookie_cart, cart_data, guest_order, get_meta
 
 
 def index(request):
     data = {}
-    context = {'data': data}
+    meta = get_meta(request, 'index', None)
+    context = {'data': data, 'meta': meta}
     return render(request, 'store/index.html', context=context)
 
 def text_page(request, url):
     page = Page.objects.get(url=url)
-    context = {'page': page}
+    meta = get_meta(request, 'text_page', page)
+    context = {'page': page, 'meta': meta}
     return render(request, 'store/text_page.html', context=context)
 
 def store(request):
     data = cart_data(request)
+    meta = get_meta(request, 'store', data)
     items = data['items']
     items_ids = []
     #TODO вернуть список айдишников (не работает при авторизации)
     # for i in items:
     #     items_ids.append(i['product']['id'])
     products = Product.objects.all()
-    context = {'products': products, 'items': items, 'items_ids': items_ids}
+    context = {'products': products, 'items': items, 'items_ids': items_ids, 'meta': meta}
     return render(request, 'store/store.html', context)
 
 def item(request, pk):
     product_item = Product.objects.get(id=pk)
-    context = {'product': product_item}
+    meta = get_meta(request, 'item', product_item)
+    context = {'product': product_item, 'meta': meta}
     return render(request, 'store/item.html', context)
 
 def cart(request):
     data = cart_data(request)
+    meta = get_meta(request, 'cart', None)
     delivery_types = DeliveryType.objects.all()
     payment_types = PaymentType.objects.all()
     items = data['items']
     get_cart_total = data['cart_total']
     get_cart_count = data['cart_count']
     customer = data['customer']
-    context = {'customer': customer, 'items': items, 'cart_total': get_cart_total, 'cart_count': get_cart_count, 'delivery_types': delivery_types, 'payment_types': payment_types}
+    context = {'customer': customer, 'items': items, 'cart_total': get_cart_total, 'cart_count': get_cart_count, 'delivery_types': delivery_types, 'payment_types': payment_types, 'meta': meta}
     return render(request, 'store/cart.html', context)
 
 
