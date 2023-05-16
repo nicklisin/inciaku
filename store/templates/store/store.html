@@ -111,29 +111,29 @@
 {#                      <a class="filt-l-cur" href="">Герметизированные</a>#}
 {#                    </div>#}
 {#                  </div>#}
+
+                <form id="filter-form" method="GET" action=".">
                   <div class="filt-sec">
                     <div class="filt-semi">Полярность</div>
+
                     <div class="filt-checks">
                       <div class="check-cont">
                         <div class="check-box">
+                          {% for key, value in filter_polarities %}
                           <div class="check">
                             <label>
-                              <input type="checkbox" name="">
+                              <input type="checkbox" name="polarity" value="{{ key }}">
                               <div class="check-point"></div>
-                              <div class="check-text">Прямая</div>
+                              <div class="check-text">{{ value }}</div>
                             </label>
                           </div>
-                          <div class="check">
-                            <label>
-                              <input type="checkbox" name="">
-                              <div class="check-point"></div>
-                              <div class="check-text">Обратная</div>
-                            </label>
-                          </div>
+                          {% endfor %}
                         </div>
                       </div>
                     </div>
+
                   </div>
+
                   <div class="filt-sec">
                     <div class="filt-semi">Емкость, А·ч</div>
                     <div class="pol-sec">
@@ -148,68 +148,59 @@
                     </div>
                     <div class="pol-fills">
                       <div class="p-f-box">
-                        <input type="text" class="p-f-fill-text" value="1">
+                        <input type="text" name="capacity-from" class="p-f-fill-text" value="0">
                       </div>
                       <div class="fill-to">до</div>
                       <div class="p-f-box">
-                        <input type="text" class="p-f-fill-text" value="4000">
+                        <input type="text" name="capacity-to" class="p-f-fill-text" value="300">
                       </div>
                     </div>
                   </div>
-                  <div class="filt-sec">
-                    <div class="filt-semi">Пусковой ток, А</div>
-                    <div class="pol-sec">
-                      <div class="p-s p-s-l">
-                        <div class="psp"></div>
-                      </div>
-                      <div class="p-s p-s-r">
-                        <div class="psp"></div>
-                      </div>
-                      <div class="p-line"></div>
-                      <div class="p-line p-line-c"></div>
-                    </div>
-                    <div class="pol-fills">
-                      <div class="p-f-box">
-                        <input type="text" class="p-f-fill-text" value="1">
-                      </div>
-                      <div class="fill-to">до</div>
-                      <div class="p-f-box">
-                        <input type="text" class="p-f-fill-text" value="4000">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="filt-sec">
-                    <div class="filt-semi">Цена</div>
-                    <div class="pol-sec">
-                      <div class="p-s p-s-l">
-                        <div class="psp"></div>
-                      </div>
-                      <div class="p-s p-s-r">
-                        <div class="psp"></div>
-                      </div>
-                      <div class="p-line"></div>
-                      <div class="p-line p-line-c"></div>
-                    </div>
-                    <div class="pol-fills">
-                      <div class="p-f-box">
-                        <select class="p-f-fill">
-                          <option>Минимум</option>
-                          <option>2000р</option>
-                          <option>5000р</option>
-                          <option>10000р</option>
-                        </select>
-                      </div>
-                      <div class="fill-to">до</div>
-                      <div class="p-f-box">
-                        <select class="p-f-fill">
-                          <option>10000р</option>
-                          <option>20000р</option>
-                          <option>50000р</option>
-                          <option>50000р+</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
+{#                    <div class="filt-sec">#}
+{#                    <div class="filt-semi">Цена</div>#}
+{#                    <div class="pol-sec">#}
+{#                      <div class="p-s p-s-l">#}
+{#                        <div class="psp"></div>#}
+{#                      </div>#}
+{#                      <div class="p-s p-s-r">#}
+{#                        <div class="psp"></div>#}
+{#                      </div>#}
+{#                      <div class="p-line"></div>#}
+{#                      <div class="p-line p-line-c"></div>#}
+{#                    </div>#}
+{#                    <div class="pol-fills">#}
+{#                      <div class="p-f-box">#}
+{#                        <input type="text" class="p-f-fill-text" value="1">#}
+{#                      </div>#}
+{#                      <div class="fill-to">до</div>#}
+{#                      <div class="p-f-box">#}
+{#                        <input type="text" class="p-f-fill-text" value="4000">#}
+{#                      </div>#}
+{#                    </div>#}
+{#                  </div>#}
+{#                  <div class="filt-sec">#}
+{#                    <div class="filt-semi">Пусковой ток, А</div>#}
+{#                    <div class="pol-sec">#}
+{#                      <div class="p-s p-s-l">#}
+{#                        <div class="psp"></div>#}
+{#                      </div>#}
+{#                      <div class="p-s p-s-r">#}
+{#                        <div class="psp"></div>#}
+{#                      </div>#}
+{#                      <div class="p-line"></div>#}
+{#                      <div class="p-line p-line-c"></div>#}
+{#                    </div>#}
+{#                    <div class="pol-fills">#}
+{#                      <div class="p-f-box">#}
+{#                        <input type="text" class="p-f-fill-text" value="1">#}
+{#                      </div>#}
+{#                      <div class="fill-to">до</div>#}
+{#                      <div class="p-f-box">#}
+{#                        <input type="text" class="p-f-fill-text" value="4000">#}
+{#                      </div>#}
+{#                    </div>#}
+{#                  </div>#}
+                </form>
 
 
                 </div>
@@ -220,4 +211,5 @@
 {#                @@include('./html/questions.html', {'text': ''})#}
 {#                @@include('./html/popular-box.html', {"title": "Вы смотрели"})#}
             </div>
+    <script src="{% static 'js/filters.js' %}" type="text/javascript"></script>
 {% endblock content %}

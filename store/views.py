@@ -1,6 +1,6 @@
 import json
 
-from django.db.models import F
+from django.db.models import F, Q
 from django.shortcuts import render
 from django.db import connection
 from django.http import JsonResponse
@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
 from .models import Product, Order, OrderItem, ShippingAddress, Customer, Page, DeliveryType, PaymentType
-from .utils import cookie_cart, cart_data, guest_order, get_meta
+from .utils import cookie_cart, cart_data, guest_order, get_meta, get_filter_params
 
 
 def index(request):
@@ -31,8 +31,28 @@ def store(request):
     #TODO вернуть список айдишников (не работает при авторизации)
     # for i in items:
     #     items_ids.append(i['product']['id'])
+    filter_params = get_filter_params(request)
+    print('filter_params', filter_params)
     products = Product.objects.all()
-    context = {'products': products, 'items': items, 'items_ids': items_ids, 'meta': meta}
+
+    filter_polarities = products.distinct().values('polarity')
+    polarities_choices = Product.polarity.field.choices
+    polarities_choices_clear = []
+    for i in filter_polarities:
+        polarities_choices_clear.append(i['polarity'])
+    res = []
+    for i in polarities_choices:
+        if i[0] in polarities_choices_clear:
+            res.append([i[0], i[1]])
+
+    if filter_params['polarity']:
+        products = products.filter(polarity__in=filter_params['polarity'])
+    if filter_params['capacity_from']:
+        capacity_from = filter_params['capacity_from'] or 0
+        capacity_to = filter_params['capacity_to'] or 300
+        products = products.filter(Q(capacity__gte=capacity_from) & Q(capacity__lte=capacity_to))
+
+    context = {'products': products, 'items': items, 'items_ids': items_ids, 'meta': meta, 'filter_polarities': res}
     return render(request, 'store/store.html', context)
 
 def item(request, pk):

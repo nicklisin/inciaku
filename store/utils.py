@@ -94,3 +94,20 @@ def get_meta(request, page_type:str, data):
         'description': description,
     }
     return meta
+
+
+def get_filter_params(request):
+    polarity = []
+    capacity_from = 0
+    capacity_to = 300
+    try:
+        polarity = request.GET.getlist('polarity')
+        print('polarity', polarity)
+    except:
+        pass
+    try:
+        capacity_from = request.GET['capacity-from']
+        capacity_to = request.GET['capacity-to']
+    except:
+        pass
+    return {'polarity': polarity, 'capacity_from': capacity_from, 'capacity_to': capacity_to}
