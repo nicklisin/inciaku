@@ -32,7 +32,6 @@ def store(request):
     # for i in items:
     #     items_ids.append(i['product']['id'])
     filter_params = get_filter_params(request)
-    print('filter_params', filter_params)
     products = Product.objects.all()
 
     filter_polarities = products.distinct().values('polarity')
@@ -55,8 +54,8 @@ def store(request):
     context = {'products': products, 'items': items, 'items_ids': items_ids, 'meta': meta, 'filter_polarities': res}
     return render(request, 'store/store.html', context)
 
-def item(request, pk):
-    product_item = Product.objects.get(id=pk)
+def item(request, slug):
+    product_item = Product.objects.get(slug=slug)
     meta = get_meta(request, 'item', product_item)
     context = {'product': product_item, 'meta': meta}
     return render(request, 'store/item.html', context)

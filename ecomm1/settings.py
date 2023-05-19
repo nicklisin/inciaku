@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'store',
     'debug_toolbar',
+    'slugify',
     'django_cleanup.apps.CleanupConfig',  # should be the last
 ]
 

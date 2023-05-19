@@ -19,12 +19,12 @@
                     {% for item in items %}
                         <div id="basket-good-{{item.product.id}}" class="basket-good">
                     <div class="b-g-img">
-                      <a href="/store/{{item.product.id}}/"><img src="{% static item.product.photoURL %}"></a>
+                      <a href="/store/{{item.product.slug}}/"><img src="{% static item.product.photoURL %}"></a>
                     </div>
                     <div class="b-g-text">
                       <div class="b-g-text-top">
                         <div class="b-g-name">
-                        <a href="/store/{{item.product.id}}/">{{ item.product.brand }} {{item.product.name }}</a>
+                        <a href="/store/{{item.product.slug}}/">{{ item.product.brand }} {{item.product.name }}</a>
                         </div>
                         <div class="b-g-price"><span>{{ item.product.price | floatformat:2 }}</span> ₽</div>
                         <div class="b-g-stock">

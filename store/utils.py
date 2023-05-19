@@ -84,7 +84,7 @@ def get_meta(request, page_type:str, data):
         try:
             description = str(data.description)
         except:
-            description = description
+            pass
     if page_type == 'cart':
         title = 'Корзина'
         description = 'Корзина товаров'
@@ -102,7 +102,6 @@ def get_filter_params(request):
     capacity_to = 300
     try:
         polarity = request.GET.getlist('polarity')
-        print('polarity', polarity)
     except:
         pass
     try:

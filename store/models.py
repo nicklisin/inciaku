@@ -1,4 +1,5 @@
 from django.db import models
+from slugify import slugify
 from django.contrib.auth.models import User
 
 
@@ -73,6 +74,7 @@ class Product(models.Model):
     voltage = models.IntegerField(null=True, blank=True, default=12)
     cranking_amperage = models.IntegerField(null=True, blank=True, default=0)
     warranty = models.IntegerField(null=True, blank=True, default=12)
+    slug = models.SlugField(max_length=100, null=True, blank=True, unique=True, allow_unicode=False)
 
 
     def __str__(self):
@@ -85,6 +87,22 @@ class Product(models.Model):
         except (Exception,):
             url = ''
         return url
+
+    def save(self, *args, **kwargs):
+        dimensions = ''
+        if self.length and self.width and self.height:
+            dimensions = '-' +\
+                str(self.length or '') + 'x' +\
+                str(self.width or '') + 'x' +\
+                str(self.height or '')
+
+        # if self.slug == '' or self.slug is None:
+        slug  = str(self.type.name) + '-' +\
+                str(self.brand or '') + '-' +\
+                str(self.name or '') + '-' +\
+                str(self.technology or '') + dimensions
+        self.slug = slugify(slug)
+        return super().save(*args, **kwargs)
 
 
 class DeliveryType(models.Model):
