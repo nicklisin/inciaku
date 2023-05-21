@@ -38,7 +38,7 @@
                   <div class="t-c-cont-r">
                     <div class="card-price-box">
                       <div class="card-price">
-                        <div class="c-price"><span>{{ product.price }}</span> р.</div>
+                        <div class="c-price"><span>{{ product.price|floatformat:"0" }}</span> р.</div>
 {#                        <div class="c-sale">−5%</div>#}
                           {% if product.old_price %}
                         <div class="c-old-price"><span>{{ product.old_price }}</span> р.</div>
@@ -56,7 +56,7 @@
                       <div class="c-util-box">
                         <div class="c-util">
                           <div class="c-util-h">♻ Утилизация</div>
-                          <div class="utilsum">Скидка до <span>1800р./шт</span> при сдаче старых на&nbsp;переработку</div>
+                          <div class="utilsum">Скидка до <span>1800р./шт</span> при сдаче старого на&nbsp;переработку</div>
                         </div>
                       </div>
                     </div>

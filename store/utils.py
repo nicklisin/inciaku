@@ -71,8 +71,8 @@ def get_meta(request, page_type:str, data):
     title = ''
     description = ''
     if page_type == 'index':
-        title = 'Главная'
-        description = 'Главная страница'
+        title = 'Inci Aku – Официальный дилер'
+        description = 'Официальный дилер Inci Aku в центральном и северо-западном округах.'
     if page_type == 'text_page':
         title = data.title
         description = data.description

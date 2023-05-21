@@ -55,7 +55,7 @@ def store(request):
     return render(request, 'store/store.html', context)
 
 def item(request, slug):
-    product_item = Product.objects.get(slug=slug)
+    product_item = Product.objects.select_related('brand', 'technology', 'type', 'technology').get(slug=slug)
     meta = get_meta(request, 'item', product_item)
     context = {'product': product_item, 'meta': meta}
     return render(request, 'store/item.html', context)

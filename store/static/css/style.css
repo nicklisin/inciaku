@@ -1,14 +1,5 @@
 @charset "UTF-8";
-
-/*!
- * Bootstrap Responsive v2.3.1
- *
- * Copyright 2012 Twitter, Inc
- * Licensed under the Apache License v2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Designed and built with all the love in the world @twitter by @mdo and @fat.
- */
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
 
 .clearfix {
   *zoom: 1;
@@ -1474,6 +1465,37 @@ ul {
   display: none;
 }
 
+.main-promo {
+    width: 100%;
+    height: 100vh;
+    background-image: url('../images/inci-aku-promo.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    vertical-align: top;
+}
+
+.main-promo-text {
+    margin-top: 50px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 40px;
+    line-height: 40px;
+    color: #fff;
+    text-transform: uppercase;
+    margin-left: 15px;
+}
+
+#main-promo-three {
+    font-size: 25px;
+    line-height: 30px;
+    margin-left: 2px;
+    color: #fbc311;
+    text-shadow: 0 0 19px #0012c899;
+}
+
 .index-promo-box {
   background-color: #fbfbfb;
   margin: 20px;
@@ -2213,7 +2235,7 @@ ul {
 }
 
 .botmenu {
-  margin-top: 30px;
+  /*margin-top: 30px;*/
   font-family: "Montserrat", sans-serif;
 }
 
@@ -3704,6 +3726,22 @@ ul {
 }
 
 @media (min-width: 600px) {
+
+  /* INDEX */
+
+  .main-promo-text {
+    margin-top: 60px;
+    font-size: 69px;
+    line-height: 69px;
+    margin-left: 0;
+  }
+
+  #main-promo-three {
+    font-size: 30px;
+    line-height: 40px;
+    margin-left: 4px;
+  }
+
   .modal-header,
   .modal-body {
     padding: 24px 30px;
@@ -3844,6 +3882,22 @@ ul {
 }
 
 @media (min-width: 768px) {
+
+  /* INDEX */
+
+  .main-promo-text {
+    margin-top: 60px;
+    font-size: 90px;
+    line-height: 90px;
+  }
+
+  #main-promo-three {
+    font-size: 35px;
+    line-height: 40px;
+    margin-left: 6px;
+  }
+
+
   .r-icons {
     display: inline-block;
     width: 215px;
@@ -4553,10 +4607,6 @@ ul {
   .cat-box,
   .cat-top {
     /*background-color: #fdfdfd;*/
-  }
-
-  .bread {
-    margin-top: 6px;
   }
 
   .bread::after {

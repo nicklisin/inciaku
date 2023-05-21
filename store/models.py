@@ -74,7 +74,7 @@ class Product(models.Model):
     voltage = models.IntegerField(null=True, blank=True, default=12)
     cranking_amperage = models.IntegerField(null=True, blank=True, default=0)
     warranty = models.IntegerField(null=True, blank=True, default=12)
-    slug = models.SlugField(max_length=100, null=True, blank=True, unique=True, allow_unicode=False)
+    slug = models.SlugField(max_length=100, null=True, blank=True, unique=True, allow_unicode=False, db_index=True)
 
 
     def __str__(self):

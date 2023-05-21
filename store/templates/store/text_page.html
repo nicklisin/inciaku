@@ -1,13 +1,11 @@
-{% extends 'store/index.html' %}
+{% extends 'common.html' %}
 {% load static %}
-
+      {% block content %}
       <div class="content">
         <div class="container">
-        {% block content %}
             <h1>{{ page.title }}</h1>
             <p>{{ page.body }}</p>
-
-        {% endblock content %}
         </div>
       </div>
+      {% endblock content %}
 
