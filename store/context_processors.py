@@ -1,4 +1,3 @@
-from .models import OrderItem
 from .models import Order, Page
 from .utils import cookie_cart
 

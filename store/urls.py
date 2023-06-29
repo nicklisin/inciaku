@@ -15,4 +15,3 @@ urlpatterns = [
     path('get_cart_total/', views.get_guest_cart_total),
     path('<slug:url>/', views.text_page, name='text_page'),
 ]
-

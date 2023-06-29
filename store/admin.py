@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import *
+from .models import Product, OrderItem, Order, Brand, Page, PageCategory, ProductType, Customer, ShippingAddress, \
+                    Series, Technology, PaymentType, DeliveryType
 
 
 @admin.register(Product)
@@ -34,8 +35,3 @@ admin.site.register(Series)
 admin.site.register(Technology)
 admin.site.register(PaymentType)
 admin.site.register(DeliveryType)
-
-
-
-
-

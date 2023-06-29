@@ -52,7 +52,7 @@ class Product(models.Model):
     DIRECT = 'DIR'
     UNIVERSAL = 'UNI'
     POLARITY_CHOICES = [
-        (REVERSE,'Обратная'),
+        (REVERSE, 'Обратная'),
         (DIRECT, 'Прямая'),
         (UNIVERSAL, 'Универсальная'),
     ]
@@ -76,7 +76,6 @@ class Product(models.Model):
     warranty = models.IntegerField(null=True, blank=True, default=12)
     slug = models.SlugField(max_length=100, null=True, blank=True, unique=True, allow_unicode=False, db_index=True)
 
-
     def __str__(self):
         return self.name
 
@@ -97,10 +96,10 @@ class Product(models.Model):
                 str(self.height or '')
 
         # if self.slug == '' or self.slug is None:
-        slug  = str(self.type.name) + '-' +\
-                str(self.brand or '') + '-' +\
-                str(self.name or '') + '-' +\
-                str(self.technology or '') + dimensions
+        slug = str(self.type.name) + '-' +\
+            str(self.brand or '') + '-' +\
+            str(self.name or '') + '-' +\
+            str(self.technology or '') + dimensions
         self.slug = slugify(slug)
         return super().save(*args, **kwargs)
 
@@ -212,5 +211,3 @@ class Page(models.Model):
             max_value = int(max_page.order) + 10
             self.order = max_value
         super().save(*args, **kwargs)
-
-

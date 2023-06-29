@@ -1,11 +1,11 @@
 import json
-from .models import *
+from .models import Product, Order, Customer, OrderItem
 
 
 def cookie_cart(request):
     try:
         cart = json.loads(request.COOKIES['cart'])
-    except:
+    except Exception:
         cart = {}
     items = []
     order = {'get_cart_total': 0, 'get_cart_items': 0}
@@ -30,9 +30,10 @@ def cookie_cart(request):
                 'get_total': item_total
             }
             items.append(item)
-        except:
+        except Exception:
             pass
     return {'items': items, 'cart_total': get_cart_total, 'cart_count': get_cart_count}
+
 
 def cart_data(request):
     customer = 'null'
@@ -48,6 +49,7 @@ def cart_data(request):
         get_cart_total = cookie_data['cart_total']
         get_cart_count = cookie_data['cart_count']
     return {'customer': customer, 'items': items, 'cart_total': get_cart_total, 'cart_count': get_cart_count}
+
 
 def guest_order(request, data):
     email = data['form']['email']
@@ -67,7 +69,7 @@ def guest_order(request, data):
     return customer, order
 
 
-def get_meta(request, page_type:str, data):
+def get_meta(request, page_type: str, data):
     title = ''
     description = ''
     if page_type == 'index':
@@ -83,7 +85,7 @@ def get_meta(request, page_type:str, data):
         title = f'Автомобильный аккумулятор {str(data.brand)} {str(data.name)} {str(data.technology)}'
         try:
             description = str(data.description)
-        except:
+        except Exception:
             pass
     if page_type == 'cart':
         title = 'Корзина'
@@ -102,11 +104,11 @@ def get_filter_params(request):
     capacity_to = 300
     try:
         polarity = request.GET.getlist('polarity')
-    except:
+    except Exception:
         pass
     try:
         capacity_from = request.GET['capacity-from']
         capacity_to = request.GET['capacity-to']
-    except:
+    except Exception:
         pass
     return {'polarity': polarity, 'capacity_from': capacity_from, 'capacity_to': capacity_to}

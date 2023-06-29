@@ -1,13 +1,10 @@
 import json
 
-from django.db.models import F, Q
+from django.db.models import Q
 from django.shortcuts import render
-from django.db import connection
 from django.http import JsonResponse
-from django.shortcuts import redirect
-from django.contrib.auth.models import User
 
-from .models import Product, Order, OrderItem, ShippingAddress, Customer, Page, DeliveryType, PaymentType
+from .models import Product, Order, OrderItem, ShippingAddress, Page, DeliveryType, PaymentType
 from .utils import cookie_cart, cart_data, guest_order, get_meta, get_filter_params
 
 
@@ -17,18 +14,20 @@ def index(request):
     context = {'data': data, 'meta': meta}
     return render(request, 'store/index.html', context=context)
 
+
 def text_page(request, url):
     page = Page.objects.get(url=url)
     meta = get_meta(request, 'text_page', page)
     context = {'page': page, 'meta': meta}
     return render(request, 'store/text_page.html', context=context)
 
+
 def store(request):
     data = cart_data(request)
     meta = get_meta(request, 'store', data)
     items = data['items']
     items_ids = []
-    #TODO вернуть список айдишников (не работает при авторизации)
+    # TODO вернуть список айдишников (не работает при авторизации)
     # for i in items:
     #     items_ids.append(i['product']['id'])
     filter_params = get_filter_params(request)
@@ -54,11 +53,13 @@ def store(request):
     context = {'products': products, 'items': items, 'items_ids': items_ids, 'meta': meta, 'filter_polarities': res}
     return render(request, 'store/store.html', context)
 
+
 def item(request, slug):
     product_item = Product.objects.select_related('brand', 'technology', 'type', 'technology').get(slug=slug)
     meta = get_meta(request, 'item', product_item)
     context = {'product': product_item, 'meta': meta}
     return render(request, 'store/item.html', context)
+
 
 def cart(request):
     data = cart_data(request)
@@ -69,7 +70,8 @@ def cart(request):
     get_cart_total = data['cart_total']
     get_cart_count = data['cart_count']
     customer = data['customer']
-    context = {'customer': customer, 'items': items, 'cart_total': get_cart_total, 'cart_count': get_cart_count, 'delivery_types': delivery_types, 'payment_types': payment_types, 'meta': meta}
+    context = {'customer': customer, 'items': items, 'cart_total': get_cart_total, 'cart_count': get_cart_count,
+               'delivery_types': delivery_types, 'payment_types': payment_types, 'meta': meta}
     return render(request, 'store/cart.html', context)
 
 
@@ -134,10 +136,12 @@ def process_order(request):
 
     return JsonResponse('order submitted', safe=False)
 
+
 def get_guest_cart_total(request):
     cookie_data = cookie_cart(request)
     cookie_cart_total = cookie_data['cart_total']
     return JsonResponse(cookie_cart_total, safe=False)
+
 
 def thanks(request):
     return render(request, 'store/thanks.html')
