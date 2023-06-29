@@ -114,10 +114,10 @@ if DEBUG:
 else:
     STATIC_ROOT = '/vol/web/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'uploads/'),
-    os.path.join(BASE_DIR, 'store/static/'),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'uploads/'),
+#     os.path.join(BASE_DIR, 'store/static/'),
+# ]
 
 
 # Default primary key field type
