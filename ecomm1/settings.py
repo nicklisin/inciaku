@@ -13,6 +13,7 @@ DEBUG = os.environ.get('DEBUG') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '0.0.0.0').split(' ')
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://0.0.0.0').split(' ')
+INTERNAL_IPS = ('0.0.0.0', '127.0.0.1',)
 
 # Application definition
 
@@ -107,10 +108,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
 
-MEDIA_ROOT = '/vol/web/media/'
-STATIC_ROOT = '/vol/web/static/'
+if DEBUG:
+    STATIC_ROOT = 'static/'
+else:
+    STATIC_ROOT = '/vol/web/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'uploads/'),
