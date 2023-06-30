@@ -22,3 +22,5 @@ urlpatterns = [
     path('', include('store.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
 ]
+
+handler404 = 'store.views.handle_404'

@@ -1,7 +1,7 @@
 import json
 
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 
 from .models import Product, Order, OrderItem, ShippingAddress, Page, DeliveryType, PaymentType
@@ -16,10 +16,11 @@ def index(request):
 
 
 def text_page(request, url):
-    page = Page.objects.get(url=url)
-    meta = get_meta(request, 'text_page', page)
-    context = {'page': page, 'meta': meta}
-    return render(request, 'store/text_page.html', context=context)
+    page = get_object_or_404(Page, url=url)
+    if page:
+        meta = get_meta(request, 'text_page', page)
+        context = {'page': page, 'meta': meta}
+        return render(request, 'store/text_page.html', context=context)
 
 
 def store(request):
@@ -145,3 +146,7 @@ def get_guest_cart_total(request):
 
 def thanks(request):
     return render(request, 'store/thanks.html')
+
+
+def handle_404(request, exception):
+    return render(request, '404.html')

@@ -1,6 +1,8 @@
 from django.db import models
 from slugify import slugify
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Customer(models.Model):
@@ -11,6 +13,18 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+
+
+@receiver(post_save, sender=User)
+def customer_creation_for_user(instance, created, **kwargs):
+    if created:
+        customer = Customer(user=instance)
+        customer.name = instance.username
+        if instance.first_name:
+            customer.name = instance.first_name
+        if instance.email:
+            customer.email = instance.email
+        customer.save()
 
 
 class Brand(models.Model):
