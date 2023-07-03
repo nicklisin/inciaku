@@ -62,9 +62,30 @@ jobs:
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:proxy-$IMAGE_TAG ./proxy
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:proxy-$IMAGE_TAG
 
+  build-certbot:
+      runs-on: ubuntu-latest
+      env:
+        DOMAIN: ${{ secrets.DOMAIN }}
+        EMAIL: ${{secrets.ACME_DEFAULT_EMAIL}}
+      steps:
+      - uses: actions/checkout@v3
+      - name: Yandex Cloud CR "Login" Action for GitHub Actions
+        uses: yc-actions/yc-cr-login@v1
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+
+      - name: Certbot Build, tag, and push image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY: crpeg05053fj7bqfk5od
+          CR_REPOSITORY: cicd-django
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:certbot-$IMAGE_TAG ./certbot
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:certbot-$IMAGE_TAG
+
   update-yc:
     runs-on: ubuntu-latest
-    needs: [build-backend, build-proxy]
+    needs: [build-backend, build-proxy, build-certbot]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
