@@ -8,6 +8,10 @@ if [ ! -f "/vol/proxy/ssl-dhparams.pem" ]; then
   openssl dhparam -out /vol/proxy/ssl-dhparams.pem 2048
 fi
 
+export host=\$host
+export http_host=\$http_host
+export request_uri=\$request_uri
+
 echo "Checking for fullchain.pem"
 if [ ! -f "/etc/letsencrypt/live/${DOMAIN}/fullchain.pem" ]; then
   echo "No SSL cert, enabling HTTP only..."
