@@ -5,7 +5,7 @@ services:
     volumes:
       - static:/vol/web
     ports:
-      - 8000:8000
+      - "8000:8000"
     container_name: app
     image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPOSITORY }}:app-{{ env.IMAGE_TAG }}
     environment:
@@ -30,7 +30,7 @@ services:
       - POSTGRES_USER={{env.DB_USER}}
       - POSTGRES_PASSWORD={{env.DB_PASSWORD}}
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
@@ -41,10 +41,34 @@ services:
     depends_on:
       - app
     ports:
-      - 80:80
+      - "80:80"
+      - "443:443"
     volumes:
       - static:/vol/web
+      - certbot-web:/vol/www
+      - proxy-dhparams:/vol/proxy
+      - certbot-certs:/etc/letsencrypt
+    environment:
+      - DOMAIN={{env.DOMAIN}}
+
+  certbot:
+    container_name: certbot
+    build:
+      context: ./certbot
+    command: echo "Scipping ..."
+    environment:
+      - EMAIL={{env.ACME_DEFAULT_EMAIL}}
+      - DOMAIN={{env.DOMAIN}}
+    volumes:
+      - certbot-web:/vol/www
+      - certbot-certs:/etc/letsencrypt
+    depends_on:
+      - proxy
 
 volumes:
   postgres-data:
   static:
+  certbot-web:
+  proxy-dhparams:
+  certbot-certs:
+
