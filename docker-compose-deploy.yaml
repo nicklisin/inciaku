@@ -54,7 +54,7 @@ services:
   certbot:
     container_name: certbot
     image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPOSITORY }}:certbot-{{ env.IMAGE_TAG }}
-    command: echo "Scipping ..."
+    #command: sh /opt/certify-init.sh // Only for the first run
     environment:
       - EMAIL={{env.ACME_DEFAULT_EMAIL}}
       - DOMAIN={{env.DOMAIN}}
