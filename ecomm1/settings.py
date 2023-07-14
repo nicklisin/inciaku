@@ -124,7 +124,7 @@ else:
 
 # On server, we will be using S3 to store image uploads
 if not DEBUG:
-    DEFAULT_FILE_STORAGE = 'ecomm1.s3_storage.StaticStorage'
+    DEFAULT_FILE_STORAGE = 'ecomm1.s3_storage.MediaStorage'
     AWS_S3_ENDPOINT_URL = 'https://storage.yandexcloud.net'
     AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID')
     AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
