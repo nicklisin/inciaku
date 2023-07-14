@@ -9,8 +9,7 @@ from django.dispatch import receiver
 
 def get_upload_path(instance, filename):
     ext = '.' + filename.split('.')[-1]
-    filename = ''.join(random.choices(string.ascii_lowercase +
-                         string.digits, k=10))
+    filename = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
     return 'product/' + filename + ext
 
 
