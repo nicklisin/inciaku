@@ -1,8 +1,17 @@
+import random
+import string
 from django.db import models
 from slugify import slugify
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+
+def get_upload_path(instance, filename):
+    ext = '.' + filename.split('.')[-1]
+    filename = ''.join(random.choices(string.ascii_lowercase +
+                         string.digits, k=10))
+    return 'product/' + filename + ext
 
 
 class Customer(models.Model):
@@ -79,7 +88,7 @@ class Product(models.Model):
     old_price = models.DecimalField(max_digits=9, decimal_places=2, null=True, blank=True)
     series = models.ForeignKey(Series, on_delete=models.SET_NULL, null=True, blank=True)
     technology = models.ForeignKey(Technology, on_delete=models.SET_NULL, null=True, blank=True)
-    photo = models.ImageField(upload_to='product/', default='', null=True, blank=True)
+    photo = models.ImageField(upload_to=get_upload_path, default='', null=True, blank=True)
     capacity = models.IntegerField(null=True, blank=True, default=0)
     weight = models.IntegerField(null=True, blank=True, default=0)
     length = models.IntegerField(null=True, blank=True, default=0)

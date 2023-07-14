@@ -37,7 +37,7 @@
                     <div class="good-box">
                         <div class="good">
                           <div class="good-img">
-                            <a href="/store/{{product.slug}}/"><img src="{% static product.photoURL %}"></a>
+                            <a href="/store/{{product.slug}}/"><img src="{{ product.photoURL }}"></a>
                           </div>
                           <div class="good-title"><a href="/store/{{product.slug}}/">{{ product.name }} {{ product.technology|default:"" }}</a></div>
                           <div class="good-params">

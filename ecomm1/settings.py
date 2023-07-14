@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'store',
+    'storages',
     'debug_toolbar',
     'slugify',
     'django_cleanup.apps.CleanupConfig',  # should be the last
@@ -108,6 +109,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 if DEBUG:
     STATIC_ROOT = 'static/'
@@ -119,6 +122,13 @@ else:
 #     os.path.join(BASE_DIR, 'store/static/'),
 # ]
 
+# On server, we will be using S3 to store image uploads
+if not DEBUG:
+    DEFAULT_FILE_STORAGE = 'store.s3_storage.StaticStorage'
+    AWS_S3_ENDPOINT_URL = 'https://storage.yandexcloud.net'
+    AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID')
+    AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
+    AWS_QUERYSTRING_AUTH = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

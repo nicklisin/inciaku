@@ -19,7 +19,7 @@
                     {% for item in items %}
                         <div id="basket-good-{{item.product.id}}" class="basket-good">
                     <div class="b-g-img">
-                      <a href="/store/{{item.product.slug}}/"><img src="{% static item.product.photoURL %}"></a>
+                      <a href="/store/{{item.product.slug}}/"><img src="{{ item.product.photoURL }}"></a>
                     </div>
                     <div class="b-g-text">
                       <div class="b-g-text-top">

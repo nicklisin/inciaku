@@ -12,7 +12,7 @@ export host=\$host
 export http_host=\$http_host
 export request_uri=\$request_uri
 export proxy_add_x_forwarded_for=\$proxy_add_x_forwarded_for
-export scheme=\$scheme;
+export scheme=\$scheme
 
 echo "Checking for fullchain.pem"
 if [ ! -f "/etc/letsencrypt/live/${DOMAIN}/fullchain.pem" ]; then
