@@ -5,16 +5,21 @@ import requests
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from .models import Product, Brand, get_upload_path
+from ecomm1.s3_storage import MediaStorage
 
 
 def save_photo_from_url(photo_url):
-    filename = get_upload_path(None, photo_url.split('/')[-1])
-    upload_path = os.path.join(settings.MEDIA_ROOT, filename)
-
+    filename = get_upload_path(None, photo_url.split('/')[-1]) # product/1234567.ext
     response = requests.get(photo_url)
     if response.status_code == 200:
-        with open(upload_path, 'wb') as f:
-            f.write(response.content)
+        if settings.DEBUG:
+            upload_path = os.path.join(settings.MEDIA_ROOT, filename)
+            with open(upload_path, 'wb') as f:
+                f.write(response.content)
+        else:
+            media_storage = MediaStorage(location='media/product')
+            media_storage.save(filename, response.content)
+
     return filename
 
 
