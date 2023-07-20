@@ -20,7 +20,7 @@ def save_photo_from_url(photo_url):
         else:
             media_storage = MediaStorage(location='media/product')
             photo_content = ContentFile(response.content)
-            media_storage.save(filename, photo_content)
+            media_storage.save(filename.split('/')[-1], photo_content)
 
     return filename
 
