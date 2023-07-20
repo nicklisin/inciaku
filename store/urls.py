@@ -13,5 +13,6 @@ urlpatterns = [
     path('update_item/', views.update_item, name='update_item'),
     path('process_order/', views.process_order, name='process_order'),
     path('get_cart_total/', views.get_guest_cart_total),
+    path('update-products/', views.update_products_view, name='update_products'),
     path('<slug:url>/', views.text_page, name='text_page'),
 ]

@@ -97,6 +97,8 @@ class Product(models.Model):
     cranking_amperage = models.IntegerField(null=True, blank=True, default=0)
     warranty = models.IntegerField(null=True, blank=True, default=12)
     slug = models.SlugField(max_length=100, null=True, blank=True, unique=True, allow_unicode=False, db_index=True)
+    is_active = models.BooleanField(default=True, null=False)
+    in_stock = models.BooleanField(default=True, null=False)
 
     def __str__(self):
         return self.name
@@ -117,12 +119,12 @@ class Product(models.Model):
                 str(self.width or '') + 'x' +\
                 str(self.height or '')
 
-        # if self.slug == '' or self.slug is None:
-        slug = str(self.type.name) + '-' +\
-            str(self.brand or '') + '-' +\
-            str(self.name or '') + '-' +\
-            str(self.technology or '') + dimensions
-        self.slug = slugify(slug)
+        if self.slug == '' or self.slug is None:
+            slug = str(self.art_code or '') + '-' +\
+                str(self.brand or '') + '-' +\
+                str(self.name or '') + '-' +\
+                str(self.technology or '') + dimensions
+            self.slug = slugify(slug)
         return super().save(*args, **kwargs)
 
 
@@ -187,7 +189,7 @@ class OrderItem(models.Model):
         return self.product.price * self.quantity
 
     def __str__(self):
-        return str(self.product.brand) + '' + str(self.product.name)
+        return f' {self.product.art_code} {self.product.brand} {self.product.name}'
 
 
 class ShippingAddress(models.Model):

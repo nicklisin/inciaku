@@ -1,8 +1,12 @@
 import json
-
+import os
+from django.contrib import messages
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
+from .update_products import FeedParser, ProductUpdater
 
 from .models import Product, Order, OrderItem, ShippingAddress, Page, DeliveryType, PaymentType
 from .utils import cookie_cart, cart_data, guest_order, get_meta, get_filter_params
@@ -32,7 +36,7 @@ def store(request):
     # for i in items:
     #     items_ids.append(i['product']['id'])
     filter_params = get_filter_params(request)
-    products = Product.objects.all()
+    products = Product.objects.filter(is_active=True)
 
     filter_polarities = products.distinct().values('polarity')
     polarities_choices = Product.polarity.field.choices
@@ -146,6 +150,18 @@ def get_guest_cart_total(request):
 
 def thanks(request):
     return render(request, 'store/thanks.html')
+
+
+def update_products_view(request):
+    feed_url = os.environ.get('GOODS_FEED_URL')
+    feed_parser = FeedParser(feed_url)
+    product_updater = ProductUpdater(feed_parser)
+    updated_count, photos_loaded_count, added_count, count_hidden_goods = product_updater.update_products()
+    message = f'Обновлено товаров: {updated_count}. Добавлено: {added_count}. Скрыто: {count_hidden_goods}.' \
+              f' Загружено фотографий: {photos_loaded_count}.'
+    messages.success(request, message)
+
+    return HttpResponseRedirect(reverse('admin:store_product_changelist'))
 
 
 def handle_404(request, exception):

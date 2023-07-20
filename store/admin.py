@@ -1,11 +1,20 @@
 from django.contrib import admin
+from django.urls import path
+from .views import update_products_view
 from .models import Product, OrderItem, Order, Brand, Page, PageCategory, ProductType, Customer, ShippingAddress, \
                     Series, Technology, PaymentType, DeliveryType
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'brand', 'price', 'series', 'technology')
+    list_display = ('art_code', 'name', 'brand', 'price', 'series', 'technology', 'is_active', 'in_stock',)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('update-products/', self.admin_site.admin_view(update_products_view), name='update_products'),
+        ]
+        return custom_urls + urls
 
 
 class OrderItemsInline(admin.TabularInline):
@@ -20,7 +29,7 @@ class OrderItemsInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ('customer', 'complete', 'created', 'updated', 'get_cart_total', 'get_address',)
-    list_display = ('customer',  'created', 'updated', 'complete', 'get_cart_total', 'payment_type', 'delivery_type')
+    list_display = ('customer',  'created', 'updated', 'complete', 'get_cart_total', 'payment_type', 'delivery_type',)
     inlines = [OrderItemsInline]
 
 

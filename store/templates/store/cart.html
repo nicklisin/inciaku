@@ -171,7 +171,7 @@
       {% endif %}
       </div>
 
-    <script src="/store/static/js/phonemask.min.js"></script>
+    <script src={% static "/js/phonemask.min.js" %}></script>
     <script type="text/javascript">
         const cssPhone = 'input[name="phone"]';
         (new phoneMask()).init(cssPhone);
@@ -179,10 +179,12 @@
     <script>
     const form = document.querySelector('#checkout-form')
     const submitBtn = document.querySelector('#checkout-submit-btn')
-    submitBtn.addEventListener('click', (e)=>{
-        e.preventDefault()
-        SubmitFormData()
-    })
+    if (submitBtn){
+        submitBtn.addEventListener('click', (e)=>{
+            e.preventDefault()
+            SubmitFormData()
+        })
+    }
 
     if (user !== 'AnonymousUser') {
         if(!form.name.value){

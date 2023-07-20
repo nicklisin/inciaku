@@ -2181,7 +2181,7 @@ ul {
 .footer {
   /*height: 734px; WITH SUBSCRIBE*/
   height: 423px;
-  background-color: #222222;
+  background-color: #3c3b3b;
 }
 
 .social {
@@ -6270,5 +6270,18 @@ ul {
 
   .hidden-print {
     display: none !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  .top {
+      padding: 10px 40px;
+      border-radius: 0 0 10px 10px;
+  }
+
+  .main-promo {
+    margin: 20px 0;
+    border-radius: 40px;
+    height: 930px;
   }
 }

@@ -37,7 +37,7 @@
                     <div class="good-box">
                         <div class="good">
                           <div class="good-img">
-                            <a href="/store/{{product.slug}}/"><img src="{{ product.photoURL }}"></a>
+                            <a href="/store/{{product.slug}}/"><img alt="{{ product.name }}" style="object-fit: cover;" width="auto" height="150" loading="lazy" src="{{ product.photoURL }}"></a>
                           </div>
                           <div class="good-title"><a href="/store/{{product.slug}}/">{{ product.name }} {{ product.technology|default:"" }}</a></div>
                           <div class="good-params">
@@ -71,6 +71,7 @@
                                 <p>{{ items }}</p>
                             {% endif %}
                           </div>
+                        {% if product.in_stock %}
                         {% if product.id in items_ids %}
                           <a class="good-btn-a good-btn-order" href="/cart/">
                             <div class="good-btn">В корзине</div>
@@ -79,6 +80,7 @@
                         {% else %}
                           <button data-product="{{ product.id }}" data-action="add" class="good-btn update-cart">В корзину</button>
                           <a href=""></a>
+                        {% endif %}
                         {% endif %}
 
                         </div>
@@ -207,7 +209,7 @@
               </div>
 
             </div>
-{#            <div class="clearfix"></div>#}
+            <div class="clearfix"></div>
 {#                @@include('./html/questions.html', {'text': ''})#}
 {#                @@include('./html/popular-box.html', {"title": "Вы смотрели"})#}
             </div>

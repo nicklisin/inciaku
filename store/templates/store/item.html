@@ -45,9 +45,10 @@
                           {% endif %}
 {#                        <div class="deshevle"><a data-toggle="modal" data-target="#myPetition" href="">Нашли дешевле?</a></div>#}
                       </div>
+                      {% if product.in_stock %}
                       <div class="c-btns">
                         <div class="good-btn-a-box">
-                        <button data-product="{{ product.id }}" data-action="add" class="add-btn update-cart good-btn">В корзину</button>
+                          <button data-product="{{ product.id }}" data-action="add" class="add-btn update-cart good-btn">В корзину</button>
                         </div>
                         <div class="oneclick-box">
                           <div class="oneclick-btn"><a data-toggle="modal" data-target="#myCallback" href="">Заказать по телефону</a></div>
@@ -59,12 +60,17 @@
                           <div class="utilsum">Скидка до <span>1800р./шт</span> при сдаче старого на&nbsp;переработку</div>
                         </div>
                       </div>
+                      {% endif %}
                     </div>
                       <div class="c-deliv-box">
                         <div class="c-deliv">
                           <div class="c-deliv-h">🚚 Доставка</div>
+                          {% if product.in_stock %}
                           <div class="instock">В наличии</div>
-                            <div class="deliv-time"><span>300</span>₽. В день заказа (при заказе до 17:00)</div>
+                          <div class="deliv-time"><span>300</span>₽. В день заказа (при заказе до 17:00)</div>
+                          {% else %}
+                          <div class="outofstock">Нет в наличии</div>
+                          {% endif %}
                         </div>
                       </div>
                   </div>
