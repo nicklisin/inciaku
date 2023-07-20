@@ -192,7 +192,10 @@ class OrderItem(models.Model):
             return 0
 
     def __str__(self):
-        return f' {self.product.art_code} {self.product.brand} {self.product.name}'
+        if self.product is not None:
+            return f' {self.product.art_code} {self.product.brand} {self.product.name}'
+        else:
+            return 'None'
 
 
 class ShippingAddress(models.Model):
