@@ -9,7 +9,7 @@ from ecomm1.s3_storage import MediaStorage
 
 
 def save_photo_from_url(photo_url):
-    filename = get_upload_path(None, photo_url.split('/')[-1]) # product/1234567.ext
+    filename = get_upload_path(None, photo_url.split('/')[-1])  # product/1234567.ext
     response = requests.get(photo_url)
     if response.status_code == 200:
         if settings.DEBUG:
@@ -57,8 +57,6 @@ class FeedParser:
             for item in root.findall('Ad'):
                 if str.lower(item.find('Brand').text) == 'inci aku':
                     art_code = item.find('Id').text
-                    # category = item.find('Category').text
-                    # good_type = item.find('TypeId').text
                     name = item.find('Title').text
                     brand = item.find('Brand').text
                     price = int(item.find('Price').text)
