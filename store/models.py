@@ -186,7 +186,7 @@ class OrderItem(models.Model):
 
     @property
     def get_total(self):
-        if self.product.price and self.quantity:
+        if self.product is not None:
             return self.product.price * self.quantity
         else:
             return 0
