@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from .models import Product, Brand, get_upload_path
 from ecomm1.s3_storage import MediaStorage
+from django.core.files.base import ContentFile
 
 
 def save_photo_from_url(photo_url):
@@ -18,7 +19,8 @@ def save_photo_from_url(photo_url):
                 f.write(response.content)
         else:
             media_storage = MediaStorage(location='media/product')
-            media_storage.save(filename, response.content)
+            photo_content = ContentFile(response.content)
+            media_storage.save(filename, photo_content)
 
     return filename
 
