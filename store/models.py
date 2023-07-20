@@ -186,7 +186,10 @@ class OrderItem(models.Model):
 
     @property
     def get_total(self):
-        return self.product.price * self.quantity
+        if self.product.price and self.quantity:
+            return self.product.price * self.quantity
+        else:
+            return 0
 
     def __str__(self):
         return f' {self.product.art_code} {self.product.brand} {self.product.name}'
