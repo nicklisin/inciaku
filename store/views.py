@@ -7,9 +7,11 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .update_products import FeedParser, ProductUpdater
+from django.db.models.query import QuerySet
 
 from .models import Product, Order, OrderItem, ShippingAddress, Page, DeliveryType, PaymentType
 from .utils import cookie_cart, cart_data, guest_order, get_meta, get_filter_params
+from store.notifications import send_order_notification_to_managers, send_order_confirmation_to_customer
 
 
 def index(request):
@@ -32,9 +34,12 @@ def store(request):
     meta = get_meta(request, 'store', data)
     items = data['items']
     items_ids = []
-    # TODO вернуть список айдишников (не работает при авторизации)
-    # for i in items:
-    #     items_ids.append(i['product']['id'])
+    if not isinstance(items, QuerySet):
+        for i in items:
+            items_ids.append(i['product']['id'])
+    else:
+        items_ids = list(items.values_list('product__id', flat=True))
+
     filter_params = get_filter_params(request)
     products = Product.objects.filter(is_active=True)
 
@@ -138,6 +143,11 @@ def process_order(request):
     payment = PaymentType.objects.get(id=data['form']['payment_type'])
     order.payment_type = payment
     order.save()
+    recipients = list(os.environ.get('MANAGERS_EMAILS').split(','))
+    if recipients:
+        send_order_notification_to_managers(order, recipients)
+    if order.customer.email:
+        send_order_confirmation_to_customer(order)
 
     return JsonResponse('order submitted', safe=False)
 

@@ -1,0 +1,9 @@
+Был сделан следующий заказ:
+Номер заказа: {{ order_number }}
+Имя: {{ customer_name }}
+Email: {{ customer_email }}
+{% for item in order_items %}
+{{ item.product.art_code }} {{ item.product }}
+{{ item.quantity }} шт.
+{% endfor %}
+Итого: {{ order_total }}

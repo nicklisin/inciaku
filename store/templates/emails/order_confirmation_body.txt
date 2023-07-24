@@ -1,0 +1,9 @@
+Уважаемый {{ customer_name }},
+Спасибо за заказ. Детали заказа:
+Номер заказа: {{ order_number }}
+Дата: {{ order_date }}
+{% for item in order_items %}
+{{ item.product.art_code }} {{ item.product }}
+{{ item.quantity }} шт. х {{ item.product.price }}
+{% endfor %}
+Итого: {{ order_total }}

@@ -1,7 +1,6 @@
 {% extends 'store/index.html' %}
 {% load static %}
 {% block content %}
-
         <div class="cat-top">
             <div class="bread">
               <ul class="breadul">
@@ -73,6 +72,7 @@
                           </div>
                         {% if product.in_stock %}
                         {% if product.id in items_ids %}
+
                           <a class="good-btn-a good-btn-order" href="/cart/">
                             <div class="good-btn">В корзине</div>
                           </a>
