@@ -1,4 +1,4 @@
-Уважаемый {{ customer_name }},
+Уважаемый {{ customer_name }}!
 Спасибо за заказ. Детали заказа:
 Номер заказа: {{ order_number }}
 Дата: {{ order_date }}
