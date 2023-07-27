@@ -24,7 +24,7 @@
                     <div class="b-g-text">
                       <div class="b-g-text-top">
                         <div class="b-g-name">
-                        <a href="/store/{{item.product.slug}}/">{{ item.product.brand }} {{item.product.name }}</a>
+                        <a href="/store/{{item.product.slug}}/">{{item.product.name }}</a>
                         </div>
                         <div class="b-g-price"><span>{{ item.product.price | floatformat:2 }}</span> ₽</div>
                         <div class="b-g-stock">
@@ -81,7 +81,7 @@
                         <div class="b-contact-item address-box" style="display: none;">
                           <div class="b-text-field">
                             <label for="name">Адрес</label>
-                            <input type="text" name="address" placeholder="Адрес доставки">
+                            <input id="address" type="text" name="address" placeholder="Адрес доставки">
                           </div>
                          </div>
                   </div>
@@ -156,6 +156,7 @@
                   </div>
                   <div class="basket-personal">
                     <span>Отправляя заказ, вы даёте согласие на обработку <a href="">персональных данных</a></span>
+                      <div id="form_error"></div>
                   </div>
               </div>
 
@@ -182,7 +183,56 @@
     if (submitBtn){
         submitBtn.addEventListener('click', (e)=>{
             e.preventDefault()
-            SubmitFormData()
+            let delivery_type
+            let payment_type
+            let address
+
+            const delivery_input = document.querySelector('input[name="delivery-input"]:checked')
+            if(delivery_input !== null){
+                delivery_type = document.querySelector('input[name="delivery-input"]:checked').id
+            }
+
+            const payment_input = document.querySelector('input[name="payment-input"]:checked')
+            if(payment_input !== null){
+                payment_type = document.querySelector('input[name="payment-input"]:checked').id
+            }
+            const address_input = document.getElementById('address')
+            if(address_input !== null){
+                address = address_input.value
+            }
+
+            let errors_list = []
+            if(!delivery_type){
+                errors_list.push('Укажите способ доставки.')
+            } else if(delivery_type === 'delivery' && !address){
+                errors_list.push('Укажите адрес.')
+            }
+            if(!payment_type){
+                errors_list.push('Укажите способ оплаты.')
+            }
+            let phone_numbers = form.phone.value.replace(/\D/g, '')
+
+            if(phone_numbers.length < 11){
+                errors_list.push('Укажите номер телефона.')
+            }
+
+            const form_error = document.getElementById('form_error')
+            let message = ''
+
+            if(form_error){
+                if(errors_list){
+                    message = errors_list.join(' ')
+                    form_error.innerHTML  = `<div id="form_error" class="alert alert-danger" role="alert">${message}</div>`
+                } else {
+                    form_error.innerText = ''
+                }
+            }
+
+            if (errors_list.length === 0){
+                console.log('Ошибок нет!')
+                form_error.innerHTML = ''
+                SubmitFormData()
+            }
         })
     }
 
@@ -216,7 +266,7 @@
         }).then((response) => response.json())
             .then((data) => {
                 cart = {}
-                document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+                document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/;SameSite=Lax'
                 window.location.href = "{% url 'thanks' %}"
             })
     }

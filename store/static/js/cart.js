@@ -74,7 +74,17 @@ function upt(event){
         sendAction(productId, action)
         cartInputUpdate(cart, productId, action)
     }
-    // location.reload()
+    let button_of_action = document.querySelector(`[data-product="${productId}"]`)
+    if (button_of_action && button_of_action.innerHTML === 'В корзину') {
+        button_of_action.parentElement.classList.add('good-btn-order')
+        if (button_of_action.parentElement.classList.contains('good')){
+            button_of_action.outerHTML = '<div class="good-btn-a-box" >\n' +
+                '                            <a href="/cart/" class="good-btn good-btn-a">В корзине</a>\n' +
+                '                          </div>'
+        } else {
+            button_of_action.outerHTML = '<a href="/cart/" class=""><button class="good-btn ">В корзине</button></a>'
+        }
+    }
 }
 
 function cookieAction(productId, action, event){
@@ -112,7 +122,7 @@ function cookieAction(productId, action, event){
             document.getElementById('empty-basket').style = 'display: block;'
         }
     }
-    document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+    document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/;SameSite=Lax'
 }
 
 function cartInputUpdate(cart, productId, action){
@@ -157,7 +167,9 @@ function sendAction(productId, action){
         return response.json()
     }).then((data)=>{
         quant.innerText = data['cart_quantity']
-        window.location.reload()
+        if(window.location.pathname === '/cart/'){
+            location.reload()
+        }
     })
 }
 

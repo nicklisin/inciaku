@@ -1,7 +1,11 @@
 Был сделан следующий заказ:
 Номер заказа: {{ order_number }}
-Имя: {{ customer_name }}
-Email: {{ customer_email }}
+Дата: {{ order_date }}
+{% if customer_name %}Имя: {{ customer_name }}{% endif %}
+{% if delivery_type %}Тип доставки: {{ delivery_type }}{% endif %}
+{% if address %}Адрес доставки: {{ address }}{% endif %}
+{% if phone %}Телефон: {{ phone }}{% endif %}
+{% if customer_email %}Почта: {{ customer_email }}{% endif %}
 {% for item in order_items %}
 {{ item.product.art_code }} {{ item.product }}
 {{ item.quantity }} шт.

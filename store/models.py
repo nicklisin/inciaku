@@ -170,7 +170,12 @@ class Order(models.Model):
 
     @property
     def get_address(self):
-        return ShippingAddress.objects.get(order=self)
+        address = None
+        try:
+            address = ShippingAddress.objects.get(order=self)
+        except Exception:
+            pass
+        return address
 
     get_address.fget.short_description = 'address'
 

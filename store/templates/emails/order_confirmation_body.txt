@@ -1,7 +1,10 @@
-Уважаемый {{ customer_name }}!
+{% if customer_name %}Уважаемый {{ customer_name }}!{% endif %}
 Спасибо за заказ! Детали заказа:
 Номер заказа: {{ order_number }}
 Дата: {{ order_date }}
+{% if delivery_type %}Тип доставки: {{ delivery_type }}{% endif %}
+{% if address %}Адрес доставки: {{ address }}{% endif %}
+{% if phone %}Телефон: {{ phone }}{% endif %}
 {% for item in order_items %}
 {{ item.product.art_code }} {{ item.product }}
 {{ item.quantity }} шт. х {{ item.product.price }}
