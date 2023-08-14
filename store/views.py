@@ -166,10 +166,15 @@ def update_products_view(request):
     feed_url = os.environ.get('GOODS_FEED_URL')
     feed_parser = FeedParser(feed_url)
     product_updater = ProductUpdater(feed_parser)
+
     updated_count, photos_loaded_count, added_count, count_hidden_goods = product_updater.update_products()
-    message = f'Обновлено товаров: {updated_count}. Добавлено: {added_count}. Скрыто: {count_hidden_goods}.' \
-              f' Загружено фотографий: {photos_loaded_count}.'
-    messages.success(request, message)
+    if updated_count:
+        message = f'Обновлено товаров: {updated_count}. Добавлено: {added_count}. Скрыто: {count_hidden_goods}.' \
+                  f' Загружено фотографий: {photos_loaded_count}.'
+        messages.success(request, message)
+    else:
+        message = 'Произошла ошибка при обновлении товаров.'
+        messages.error(request, message)
 
     return HttpResponseRedirect(reverse('admin:store_product_changelist'))
 

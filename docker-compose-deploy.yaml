@@ -1,5 +1,10 @@
 version: '3.8'
 services:
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+
   app:
     restart: always
     volumes:
@@ -28,6 +33,7 @@ services:
       - DEFAULT_FROM_EMAIL={{env.DEFAULT_FROM_EMAIL}}
     depends_on:
       - db
+      - redis
   
   db:
     image: postgres:13-alpine
@@ -71,6 +77,35 @@ services:
       - certbot-certs:/etc/letsencrypt
     depends_on:
       - proxy
+
+  celeryworker:
+    container_name: celeryworker
+    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPOSITORY }}:app-{{ env.IMAGE_TAG }}
+    restart: on-failure
+    environment:
+      - BROKER_URL=${BROKER_URL}
+      - CELERY_BACKEND=${BROKER_URL}
+      - CELERY_BROKER=${BROKER_URL}
+    depends_on:
+      - app
+    command: 'celery -A ecomm1 worker -l DEBUG'
+    volumes:
+      - static:/vol/web
+
+  celerybeat:
+    container_name: celerybeat
+    image: cr.yandex/{{ env.CR_REGISTRY }}/{{ env.CR_REPOSITORY }}:app-{{ env.IMAGE_TAG }}
+    restart: on-failure
+    environment:
+      - BROKER_URL=${BROKER_URL}
+      - CELERY_BACKEND=${BROKER_URL}
+      - CELERY_BROKER=${BROKER_URL}
+    depends_on:
+      - app
+      - celeryworker
+    command: 'celery -A ecomm1 beat'
+    volumes:
+      - static:/vol/web
 
 volumes:
   postgres-data:

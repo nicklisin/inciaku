@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME', BASE_DIR / 'db.sqlite3'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
-        "HOST": os.environ.get("DB_HOST", "localhost"),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': '5432',
     }
 }
@@ -96,9 +96,9 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -147,6 +147,22 @@ else:
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
     DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+
+# Celery Configuration Options
+CELERY_TIMEZONE = 'Europe/Moscow'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+BROKER_CONNECTION_RETRY = False
+BROKER_CONNECTION_RETRY_ON_STARTUP = True
+BROKER_CONNECTION_MAX_RETRIES = 5
+
+if DEBUG:
+    CELERY_BROKER_URL = 'redis://localhost:6379'
+else:
+    CELERY_BROKER = 'redis://redis:6379/0'
+    CELERY_BACKEND = 'redis://redis:6379/0'
+    BROKER_URL = 'redis://redis:6379/0'
+    CELERY_BROKER_URL = 'redis://redis:6379/0'
 
 LOGGING = {
     'version': 1,

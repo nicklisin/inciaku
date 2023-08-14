@@ -114,7 +114,7 @@ class ProductUpdater:
 
         if not products_from_feed:
             # Если список товаров из фида пуст, выходим из метода
-            return 0, 0
+            return 0, 0, 0, 0
 
         updated_count = 0
         added_count = 0
